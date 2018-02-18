@@ -28,7 +28,8 @@
                     .enter()
                     .append("p")
                     .text(function (d) {
-                        return d.join(', ');
+                        let result = d.city + ", " + d.country;
+                        return d.city;
                     });
             }
         });

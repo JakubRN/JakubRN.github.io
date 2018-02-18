@@ -25,7 +25,7 @@
                 //callback?
             }
         });
-        d3.select("body").data(dataset).enter().append("p")
+        d3.select("body").selectAll("p").data(dataset).enter().append("p")
             .text(function (d) { return d; });
 
     </script>

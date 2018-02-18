@@ -14,15 +14,20 @@
     <h2>Hello World!</h2>
     <script type="text/javascript">
         //d3.select("body").append("p").text("New	paragraph!");
-        let dataset;
+        let dataset = [5, 10, 15, 20, 25];
         d3.csv("Cities.csv", function (error, data) {
             if (error) {
                 console.log(error)
             }
             else {
                 console.log(data);
-                dataset = data;
+                //dataset = data;
                 //callback?
+                d3.select("body").selectAll("p")
+                    .data(data)
+                    .enter()
+                    .append("p")
+                    .text("New	paragraph!");
             }
         });
         d3.select("body").selectAll("p")

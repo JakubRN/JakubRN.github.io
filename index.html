@@ -28,7 +28,7 @@
                     .enter()
                     .append("p")
                     .text(function (d) {
-                        return d.city;
+                        return d.join(', ');
                     });
             }
         });

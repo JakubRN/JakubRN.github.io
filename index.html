@@ -14,9 +14,19 @@
     <h2>Hello World!</h2>
     <script type="text/javascript">
         d3.select("body").append("p").text("New	paragraph!");
-        d3.csv("Cities.csv", function (data) {
-            console.log(data);
+        let dataset;
+        d3.csv("Cities.csv", function (error, data) {
+            if (error) {
+                console.log(error)
+            }
+            else {
+                console.log(data);
+                dataset = data;
+                //callback?
+            }
         });
+        d3.select("body").data(dataset).enter().append("p")
+            .text(function (d) { return d; });
 
     </script>
 

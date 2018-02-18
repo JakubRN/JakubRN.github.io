@@ -28,10 +28,7 @@
                     .enter()
                     .append("p")
                     .text(function (d) {
-                        result = d.city;
-                        result += ' in ';
-                        result += d.country;
-                        return { result };
+                        return d.city;
                     });
             }
         });

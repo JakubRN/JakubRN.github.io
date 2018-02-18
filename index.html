@@ -27,10 +27,10 @@
                     .data(data)
                     .enter()
                     .append("p")
-                    .text(function (data) {
-                        result = data.city;
+                    .text(function (d) {
+                        result = d.city;
                         result += ' in ';
-                        result += data.country;
+                        result += d.country;
                         return { result };
                     });
             }

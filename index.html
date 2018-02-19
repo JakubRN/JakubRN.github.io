@@ -12,9 +12,11 @@
 
 <body>
     <h2>Hello World!</h2>
+
+
     <script type="text/javascript">
         //d3.select("body").append("p").text("New	paragraph!");
-        let dataset = [5, 10, 15, 20, 25];
+        let dataset;
         d3.csv("Cities.csv", function (error, data) {
             if (error) {
                 console.log(error)
@@ -31,9 +33,17 @@
                         let result = d.city + ", " + d.country;
                         return result;
                     });
+                dataset = data;
             }
         });
-
+        d3.select("body").selectAll("div")
+            .data(dataset)
+            .enter()
+            .append("div")
+            .attr("class", "bar").style("height", function (d) {
+                var barHeight = d.temperature * 5;		//Scale	up	by	factor	of	5
+                return barHeight + "px";
+            });
 
     </script>
 

@@ -25,15 +25,15 @@
                 console.log(data);
                 //dataset = data;
                 //callback?
-                d3.select("body").selectAll("p")
-                    .data(data)
-                    .enter()
-                    .append("p")
-                    .text(function (d) {
-                        let result = d.city + ", " + d.country;
-                        return result;
-                    });
                 dataset = data;
+                d3.select("body").selectAll("div")
+                    .data(dataset)
+                    .enter()
+                    .append("div")
+                    .attr("class", "bar").style("height", function (d) {
+                        var barHeight = d.temperature * 5;		//Scale	up	by	factor	of	5
+                        return barHeight + "px";
+                    });
             }
         });
         d3.select("body").selectAll("div")

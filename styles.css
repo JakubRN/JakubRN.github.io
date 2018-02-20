@@ -5,3 +5,15 @@ height:	75px;			/*	We'll	override	height	later	*/
 background-color:	teal;
 margin: 0 1px;
 }
+
+.myPlot {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 100;
+    font-size: 8px;
+    background-color: #233172c0;
+    color: #c4a9a9;
+    fill: brown;
+    stroke: antiquewhite;
+    stroke-width: 1px;
+    background: darkblue;
+}

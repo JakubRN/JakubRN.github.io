@@ -8,31 +8,43 @@
     <script type="text/javascript" src="d3.js"></script>
     <script type="text/javascript" src="jquery-3.3.1.js"></script>
     <script type="text/javascript" src="drawEurope.js"></script>
+    <script type="text/javascript" src="timeLine.js"></script>
+    <script type="text/javascript" src="barchart.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
         crossorigin="anonymous">
     <link rel="stylesheet" href="/styles.css" src="/styles.css?v={5}">
 </head>
 
-<body>
-
+<body class="container" , id="body">
+    <p>hello</p>
 
     <script type="text/javascript">
         //d3.select("body").append("p").text("New	paragraph!");
 
-        let dataset = [5, 10, 15, 20, 25];
-        let padding = 40;
-        let w = $(document).width();
-        let h = $(document).height();
-        function toFixed(value, precision) {
-            var power = Math.pow(10, precision || 0);
-            return String(Math.round(value * power) / power);
-        };
-        d3.csv("Cities.csv", function (error, data) {
+        var parseTime = d3.timeParse("%m/%d/%y");
+        //For converting Dates to strings
+        var formatTime = d3.timeFormat("%e");
+        let padding = 50;
+        let w = document.getElementById("body").clientWidth;
+        let h = document.getElementById("body").clientWidth * 2 / 3;
+        let dataset = [5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+            11, 12, 15, 20, 18, 17, 16, 18, 23, 25]
+        var rowConverter = function (d) {
+            return {
+                Date: parseTime(d.Date),
+                Amount: parseInt(d.Amount)
+            };
+        }
+        d3.csv("time_scale_data.csv", rowConverter, function (error, data) {
             if (error) {
                 console.log(error)
             }
             else {
-                drawEurope(data);
+
+                console.log(data);
+                //drawEurope(data);
+                //timeline(data);
+                barChart(dataset);
             }
         });
 

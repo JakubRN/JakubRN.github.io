@@ -1,4 +1,12 @@
 function drawEurope(data) {
+    let padding = 20;
+    let w = $(document).width();
+    let h = $(document).height();
+    function toFixed(value, precision) {
+        var power = Math.pow(10, precision || 0);
+        return String(Math.round(value * power) / power);
+    };
+
     data.forEach(element => {
         element.longitude = parseFloat(element.longitude);
         element.latitude = parseFloat(element.latitude);

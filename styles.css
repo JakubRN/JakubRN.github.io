@@ -6,11 +6,10 @@ background-color:	teal;
 margin: 0 1px;
 }
 
-body {
-  height: 100%;
-  overflow: hidden;
-}
 
+.graphArea {
+  
+}
 .myPlot {
     font-family: 'Open Sans', sans-serif;
     font-weight: 100;
@@ -20,9 +19,11 @@ body {
     fill: azure;
 
 }
-.axis {
-  
+.point {
+  fill: black;
+  color: black;
 }
+
 .axis	path,
 .axis	line	{
 stroke:	azure;

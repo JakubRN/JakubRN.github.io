@@ -1,4 +1,7 @@
 function timeline(data) {
+    var parseTime = d3.timeParse("%m/%d/%y");
+    //For converting Dates to strings
+    var formatTime = d3.timeFormat("%e");
     let start = d3.min(data, element => { return element.Date });
     let end = d3.max(data, element => { return element.Date });
     xScale = d3.scaleTime()

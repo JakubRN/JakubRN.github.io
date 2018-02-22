@@ -6,27 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>time to learn D3</title>
     <script type="text/javascript" src="d3.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script type="text/javascript" src="jquery-3.3.1.js"></script>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
         crossorigin="anonymous">
     <link rel="stylesheet" href="/styles.css" src="/styles.css?v={5}">
 </head>
 
 <body>
-    <h2>Hello World!</h2>
 
 
     <script type="text/javascript">
         //d3.select("body").append("p").text("New	paragraph!");
-        let w = 800;
-        let h = 150;
+
         let dataset = [5, 10, 15, 20, 25];
-        let scatterX = function (d) {
-            return (d.longitude * w / 60 + 120);
-        };
-        let scatterY = function (d) {
-            return w - ((d.latitude * w / 50) - 250);
-        };
+        let padding = 40;
+        let w = $(document).width();
+        let h = $(document).height();
         function toFixed(value, precision) {
             var power = Math.pow(10, precision || 0);
             return String(Math.round(value * power) / power);
@@ -36,62 +32,40 @@
                 console.log(error)
             }
             else {
-                console.log(data);
+                data.forEach(element => {
+                    element.longitude = parseFloat(element.longitude);
+                    element.latitude = parseFloat(element.latitude);
+                });
+                let myFormat = d3.format("1.5");
+                console.log(myFormat(34.2333));
                 let xScale = d3.scaleLinear()
-                    .domain([-10, 45])
-                    .range([0, w]);
+                    .domain([d3.min(data, function (d) { return d.longitude }),
+                    d3.max(data, function (d) { return d.longitude })])
+                    .range([padding, w - padding]);
                 let yScale = d3.scaleLinear()
-                    .domain([d3.min(data, function (d) { return d.latitude }) - 1, d3.max(data, function (d) { return d.latitude }) - 1])
-                    .range([0, w]);
-                //dataset = data;
-                //callback
-                d3.select("body").selectAll("div")
-                    .data(data)
-                    .enter()
-                    .append("div")
-                    .attr("class", "bar").style("height", function (d) {
-                        var barHeight = d.temperature * 5;
-                        return barHeight + "px";
-                    });
-                var svg = d3.select("body")
-                    .append("svg")
-                    .attr("width", w)			//	<--	Here
-                    .attr("height", h);	//	<--	and	here!
-
-                var circles = svg.selectAll("circle")
-                    .data(dataset)
-                    .enter()
-                    .append("circle");
-
-                circles.attr("cx", function (d, i) {
-                    return (i * 50) + 25;
-                })
-                    .attr("cy", h / 2)
-                    .attr("r", function (d) {
+                    .domain([d3.min(data, function (d) { return d.latitude }),
+                    d3.max(data, function (d) { return d.latitude })])
+                    .range([h - padding, padding]);
+                function myFilter(d) {
+                    if (d.country == 'Turkey') {
                         return d;
-                    }).attr("fill", "yellow")
-                    .attr("stroke", "orange")
-                    .attr("stroke-width", function (d) {
-                        return 3;
-                    });
-
+                    }
+                }
+                //callback
                 var svg2 = d3.select("body")
                     .append("svg")
                     .attr("class", "myPlot")
                     .attr("width", w)			//	<--	Here
-                    .attr("height", w);	//	<--	and	here!
+                    .attr("height", h);	//	<--	and	here!
 
                 svg2.selectAll("circle")
-                    .data(data.filter(function (d) {
-                        //if (d.country == 'Turkey') {
-                        return d;
-                        //}
-                    }))
+                    .data(data)
                     .enter()
                     .append("circle")
                     .attr("cx", function (d) { return xScale(d.longitude) })
-                    .attr("cy", function (d) { return w - yScale(d.latitude) })
-                    .attr("r", 1);
+                    .attr("cy", function (d) { return yScale(d.latitude) })
+                    .attr("r", 2);
+
                 svg2.selectAll("text")
                     .data(data)
                     .enter()
@@ -103,8 +77,15 @@
                     .attr('x', function (d) {
                         return xScale(d.longitude) + 3;
                     })
-                    .attr('y', function (d) { return w - yScale(d.latitude); });
-
+                    .attr('y', function (d) { return yScale(d.latitude); });
+                svg2.append('g')
+                    .attr("class", "axis")
+                    .attr("transform", "translate(0," + (h - padding) + ")")
+                    .call(d3.axisBottom(xScale));
+                svg2.append("g")
+                    .attr("class", "axis")
+                    .attr("transform", "translate(" + padding + ",0)")
+                    .call(d3.axisLeft(yScale));
             }
         });
 

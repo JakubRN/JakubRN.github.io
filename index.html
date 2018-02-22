@@ -32,25 +32,71 @@
         let dataset = [5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
             11, 12, 15, 20, 18, 17, 16, 18, 23, 25]
         var formatMonth = d3.timeFormat("%m");
-        var colors = d3.scaleOrdinal(d3.schemeCategory10);
+        var colors = d3.scaleOrdinal(d3.schemeCategory20c);
         var rowConverter = function (d) {
             //var format = d3.time.format("%b");
+            let result;
             var parseTime = d3.timeParse("%b");
-            return {
-                Index: parseInt(d.Index),
-                Month: parseTime(d.Month),
-                Count: parseInt(d.Count)
-            };
+
+            if (d.Index == 0)
+                return {
+                    Month: parseTime(d.Month),
+                    zero: parseInt(d.Count),
+                    one: 0,
+                    two: 0,
+                    three: 0
+                };
+            else if (d.Index == 1)
+                return {
+                    Month: parseTime(d.Month),
+                    zero: 0,
+                    one: parseInt(d.Count),
+                    two: 0,
+                    three: 0
+                };
+            else if (d.Index == 2)
+                return {
+                    Month: parseTime(d.Month),
+                    zero: 0,
+                    one: 0,
+                    two: parseInt(d.Count),
+                    three: 0
+                };
+            else if (d.Index == 3)
+                return {
+                    Month: parseTime(d.Month),
+                    zero: 0,
+                    one: 0,
+                    two: 0,
+                    three: parseInt(d.Count)
+                };
         }
         d3.csv("ass1.csv", rowConverter, function (error, data) {
             if (error) {
                 throw error;
             }
-            var stack = d3.stack()
-                .keys(["zero", 'one', 'two', 'three']);
-            //Data,	stacked
-            //var series = stack();
             console.log(data);
+            let newData = new Array();
+            data.forEach(element => {
+                result = newData.find((params) => {
+                    return (element.Month.getTime() == params.Month.getTime())
+                })
+                if (result) {
+                    result.zero += element.zero;
+                    result.one += element.one;
+                    result.two += element.two;
+                    result.three += element.three;
+                    //data.splice(element, 1);
+                }
+                else { newData.push(element) }
+            });
+            console.log(newData);
+            var stack = d3.stack()
+                .keys(["zero", 'one', 'two', 'three'])
+                .order(d3.stackOrderAscending);
+            //Data,	stacked
+            let series = stack(newData);
+            console.log(series);
             var xScale = d3.scaleBand()
                 .domain(data.map(function (d) { return d.Month; }))
                 .range([padding, w - padding])
@@ -59,7 +105,7 @@
 
             var yScale = d3.scaleLinear()
                 .domain([0, d3.max(data, (params) => {
-                    return params.Count;
+                    return params.zero + params.one + params.two + params.three;
                 })])
                 .range([h - padding, padding]);
 
@@ -68,6 +114,29 @@
                 .attr("class", "myPlot")
                 .attr("width", width)
                 .attr("height", h);
+
+            var groups = svg.selectAll("g")
+                .data(series)
+                .enter()
+                .append("g")
+                .style("fill", function (d, i) {
+                    return colors(i);
+                });
+            //	Add	a	rect	for	each	data	value
+            var rects = groups.selectAll("rect")
+                .data(function (d) { return d; })
+                .enter()
+                .append("rect")
+                .attr("x", function (d, i) {
+                    return xScale(d.data.Month);
+                })
+                .attr("y", function (d) {
+                    return yScale(d[1]);
+                })
+                .attr("height", function (d) {
+                    return yScale(d[0]) - yScale(d[1]);
+                })
+                .attr("width", xScale.bandwidth());
 
             svg.selectAll("rect")
                 .data(data.filter((params) => {

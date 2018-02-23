@@ -29,8 +29,14 @@
         let width = document.getElementById("body").clientWidth
         let w = width - textSpace;
         let h = width * 2 / 3;
-        let dataset = [5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
-            11, 12, 15, 20, 18, 17, 16, 18, 23, 25]
+        let newData = new Array();
+        let rawArray = new Array();
+        let visible = {
+            zero: true,
+            one: true,
+            two: true,
+            three: true
+        }
         var formatMonth = d3.timeFormat("%m");
         var colors = d3.scaleOrdinal(d3.schemeCategory20c);
         var rowConverter = function (d) {
@@ -76,7 +82,7 @@
                 throw error;
             }
             console.log(data);
-            let newData = new Array();
+
             data.forEach(element => {
                 result = newData.find((params) => {
                     return (element.Month.getTime() == params.Month.getTime())
@@ -90,7 +96,7 @@
                 }
                 else { newData.push(element) }
             });
-            console.log(newData);
+            $.extend(true, rawArray, newData);
             var stack = d3.stack()
                 .keys(["zero", 'one', 'two', 'three'])
                 .order(d3.stackOrderAscending);
@@ -98,13 +104,13 @@
             let series = stack(newData);
             console.log(series);
             var xScale = d3.scaleBand()
-                .domain(data.map(function (d) { return d.Month; }))
+                .domain(newData.map(function (d) { return d.Month; }))
                 .range([padding, w - padding])
                 .round(true)
-                .paddingInner(0.05);
+                .paddingInner(0.2);
 
             var yScale = d3.scaleLinear()
-                .domain([0, d3.max(data, (params) => {
+                .domain([0, d3.max(newData, (params) => {
                     return params.zero + params.one + params.two + params.three;
                 })])
                 .range([h - padding, padding]);
@@ -138,27 +144,6 @@
                 })
                 .attr("width", xScale.bandwidth());
 
-            svg.selectAll("rect")
-                .data(data.filter((params) => {
-                    if (params.Index == 0) {
-                        return params;
-                    }
-                }))
-                .enter()
-                .append("rect")
-                .attr("x", function (d) {
-                    return xScale(d.Month);
-                })
-                .attr("y", function (d) {
-                    return yScale(d.Count);
-                })
-                .attr("width", xScale.bandwidth())
-                .attr("height", function (d) {
-                    return h - yScale(d.Count) - padding;
-                })
-                .attr("fill", (params) => {
-                    return colors(3);
-                })
 
             svg.append("g")
                 .attr("class", "axis")
@@ -167,7 +152,7 @@
                     .tickFormat(d3.timeFormat("%b")));
 
             svg.append("g")
-                .attr("class", "axis")
+                .attr("class", "y axis")
                 .attr("transform", "translate(" + padding + ",0)")
                 .call(d3.axisLeft(yScale));
             svg.append("text")
@@ -196,7 +181,7 @@
                 .attr("x", w + widthOffset)
                 .attr("y", h / 2 + offset * 2)
                 .attr("width", squareSize)
-                .attr("height", squareSize).attr("fill", colors(3));
+                .attr("height", squareSize).attr("fill", colors(0));
             svg.append("text").attr("x", w + widthOffset + 25)
                 .attr("y", h / 2 + offset * 2 + squareSize * (2 / 3)).text("Fruits Harvest").attr("font-size", "14px");
 
@@ -204,7 +189,7 @@
                 .attr("x", w + widthOffset)
                 .attr("y", h / 2 + offset)
                 .attr("width", squareSize)
-                .attr("height", squareSize).attr("fill", colors(2));
+                .attr("height", squareSize).attr("fill", colors(1));
             svg.append("text").attr("x", w + widthOffset + 25)
                 .attr("y", h / 2 + offset + squareSize * (2 / 3)).text("Fruits Storage").attr("font-size", "14px");
 
@@ -212,7 +197,7 @@
                 .attr("x", w + widthOffset)
                 .attr("y", h / 2)
                 .attr("width", squareSize)
-                .attr("height", squareSize).attr("fill", colors(1));
+                .attr("height", squareSize).attr("fill", colors(2));
             svg.append("text").attr("x", w + widthOffset + 25)
                 .attr("y", h / 2 + squareSize * (2 / 3)).text("Veggies Harvest").attr("font-size", "14px");
 
@@ -220,15 +205,119 @@
                 .attr("x", w + widthOffset)
                 .attr("y", h / 2 - offset)
                 .attr("width", squareSize)
-                .attr("height", squareSize).attr("fill", colors(0));
+                .attr("height", squareSize).attr("fill", colors(3));
             svg.append("text").attr("x", w + widthOffset + 25)
                 .attr("y", h / 2 - offset + squareSize * (2 / 3)).text("Veggies Storage").attr("font-size", "14px");
 
-        });
-        d3.selectAll("rect")
-            .on("click", function (params) {
+            svg.selectAll("rect")
+                .on("click", function (params) {
+                    var key;
+                    bttn = d3.select(this).attr("id");
+                    if (bttn == "FH") {
+                        if (visible.zero) {
+                            visible.zero = false;
+                            newData.forEach(element => {
 
-            })
+                                element.zero = 0;
+                            });
+                        }
+                        else {
+                            visible.zero = true;
+                            for (let index = 0; index < rawArray.length; index++) {
+                                newData[index].zero = rawArray[index].zero;
+
+                            }
+                        };
+                    }
+                    if (bttn == "FS") {
+                        if (visible.one) {
+                            visible.one = false;
+                            newData.forEach(element => {
+
+                                element.one = 0;
+                            });
+                        }
+                        else {
+                            visible.one = true;
+                            for (let index = 0; index < rawArray.length; index++) {
+                                newData[index].one = rawArray[index].one;
+
+                            }
+                        };
+
+                    }
+                    if (bttn == "VH") {
+                        if (visible.two) {
+                            visible.two = false;
+                            newData.forEach(element => {
+
+                                element.two = 0;
+                            });
+                        }
+                        else {
+                            visible.two = true;
+                            for (let index = 0; index < rawArray.length; index++) {
+                                newData[index].two = rawArray[index].two;
+
+                            }
+                        };
+
+                    }
+                    if (bttn == "VS") {
+                        if (visible.three) {
+                            visible.three = false;
+                            newData.forEach(element => {
+                                element.three = 0;
+                            });
+                        }
+                        else {
+                            visible.three = true;
+                            for (let index = 0; index < rawArray.length; index++) {
+                                newData[index].three = rawArray[index].three;
+
+                            }
+                        };
+
+                    }
+
+                    yScale.domain([0, d3.max(newData, (params) => {
+                        return params.zero + params.one + params.two + params.three;
+                    })])
+
+                    series = stack(newData);
+
+                    groups = svg.selectAll("g")
+                        .data(series)
+
+                    //	Add	a	rect	for	each	data	value
+                    var rects = groups.selectAll("rect")
+                        .data(function (d) { return d; })
+                        .transition()
+                        .delay((params, i) => {
+                            return i / series.length * 500;
+                        })
+                        .duration(1200)
+                        .ease(d3.easePolyInOut)
+                        .attr("y", function (d) {
+                            return yScale(d[1]);
+                        })
+                        .attr("height", function (d) {
+                            return yScale(d[0]) - yScale(d[1]);
+                        })
+                    svg.select(".y.axis")
+                        .transition()
+                        .delay((params, i) => {
+                            return i / series.length * 500;
+                        })
+                        .duration(1200)
+                        .ease(d3.easePolyInOut)
+                        .call(d3.axisLeft(yScale));
+
+                    // Update Y axis
+                })
+
+        });
+
     </script>
 
 </body>

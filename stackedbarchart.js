@@ -63,7 +63,6 @@ function stackedBarchart() {
         if (error) {
             throw error;
         }
-        console.log(data);
 
         data.forEach(element => {
             result = newData.find((params) => {
@@ -84,7 +83,6 @@ function stackedBarchart() {
             .order(d3.stackOrderAscending);
         //Data,	stacked
         let series = stack(newData);
-        console.log(series);
         var xScale = d3.scaleBand()
             .domain(newData.map(function (d) { return d.Month; }))
             .range([padding, w - padding])
@@ -136,7 +134,7 @@ function stackedBarchart() {
         svg.append("g")
             .attr("class", "y axis")
             .attr("transform", "translate(" + padding + ",0)")
-            .call(d3.axisLeft(yScale));
+            .call(d3.axisLeft(yScale).tickFormat(d3.format("d")));
         svg.append("text")
             .attr("transform", "rotate(-90)")
             .attr("x", 0 - (h / 2))
@@ -261,10 +259,10 @@ function stackedBarchart() {
                     };
 
                 }
-
-                yScale.domain([0, d3.max(newData, (params) => {
+                let yMaximum = d3.max(newData, (params) => {
                     return params.zero + params.one + params.two + params.three;
-                })])
+                })
+                yScale.domain([0, yMaximum])
 
                 series = stack(newData);
 
@@ -286,6 +284,13 @@ function stackedBarchart() {
                     .attr("height", function (d) {
                         return yScale(d[0]) - yScale(d[1]);
                     })
+                let numberofticks;
+                if (yMaximum < 8) {
+                    numberofticks = yMaximum
+                }
+                else {
+                    numberofticks = 8;
+                }
                 svg.select(".y.axis")
                     .transition()
                     .delay((params, i) => {
@@ -293,7 +298,7 @@ function stackedBarchart() {
                     })
                     .duration(1200)
                     .ease(d3.easePolyInOut)
-                    .call(d3.axisLeft(yScale));
+                    .call(d3.axisLeft(yScale).ticks(numberofticks, (d3.format("d"))));
 
                 // Update Y axis
             })

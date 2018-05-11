@@ -279,3 +279,39 @@ a.third:after {
 a.after:hover:after {
     width: 100%;
 }
+
+#timelineLegend {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center
+}
+
+#timelineLegend p {
+    font-size: 20px;
+    margin: 5px 2px 5px 20px;
+}
+
+#full {
+    flex: 0 0 initial;
+    width: 20px;
+    height: 20px;
+    background-color: teal;
+    opacity: 0.8;
+}
+
+#day {
+    flex: 0 0 initial;
+    width: 20px;
+    height: 20px;
+    background-color: rgb(255, 42, 42);
+    opacity: 0.8;
+}
+
+#night {
+    opacity: 0.8;
+    flex: 0 0 initial;
+    width: 20px;
+    height: 20px;
+    background-color: rgb(8, 49, 160);
+}

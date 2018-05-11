@@ -16,87 +16,10 @@ let lineChartXScale, lineChartYScale;
 let linecharts;
 let xAxis, yAxis;
 let line, wholePath;
-d3.csv('TimelineData.csv', rowConverter, (trips) => {
-    tripsEachDay = trips
-
-    linecharts = d3.select("#fullTimeline")
-        .append("svg")
-        .attr("width", w)
-        .attr("height", linechartHeight)
-        .attr("class", 'linechart');
-
-    lineChartXScale = d3.scaleTime()
-        .domain([
-            d3.min(tripsEachDay, function (d) {
-                return d.Day;
-            }),
-            d3.max(tripsEachDay, function (d) {
-                return d.Day;
-            })
-        ])
-        .range([padding, w - padding]);
-    lineChartYScale = d3.scaleLinear()
-        .domain([
-            0,
-            d3.max(tripsEachDay, function (d) {
-                return d.Count;
-            })
-        ])
-        .range([linechartHeight - padding, padding]);
-
-    xAxis = d3.axisBottom()
-        .scale(lineChartXScale)
-        .ticks(12)
-    //Define Y axis
-    yAxis = d3.axisLeft()
-        .scale(lineChartYScale)
-        .ticks(6)
-
-    line = d3.line()
-        .x(function (d) {
-            return lineChartXScale(d.Day);
-        })
-        .y(function (d) {
-            return lineChartYScale(d.Count);
-        });
-    linecharts.append("svg:clipPath")
-        .attr("id", "clip")
-        .append("svg:rect")
-        .attr("x", padding)
-        .attr("y", 0)
-        .attr("width", w - 2 * padding)
-        .attr("height", linechartHeight)
-    linecharts.append("g")
-        .attr("class", "xAxis")
-        .attr("transform", "translate(0," + (linechartHeight - padding) + ")")
-        .call(xAxis);
-    linecharts.append("g")
-        .attr("class", "yAxis")
-        .attr("transform", "translate(" + padding + ",0)")
-        .call(yAxis);
-    wholePath = linecharts.append("path")
-        .attr("clip-path", "url(#clip)")
-        .datum(tripsEachDay)
-        .attr("width", w - 2 * padding)
-        .attr("height", linechartHeight)
-        .attr("d", line)
-        .attr("class", "line")
-
-})
-quarters.forEach((element) => {
-    var h = document.getElementById(element);
-    h.addEventListener('click', zoomTimelines.bind(this));
-})
-
-times.forEach((element) => {
-    var h = document.getElementById(element);
-    h.addEventListener('click', changeTimeline.bind(this));
-})
 let dayNightLineChart;
 let dayNightxAxis, dayNightYAxis;
 let lineDay, pathDay;
 let lineNight, pathNight;
-
 
 function zoomTimelines() {
     switch (selectedQuarter) {
@@ -176,75 +99,158 @@ function changeTimeline() {
     }
 }
 
-let rowConverter2 = (data) => {
-    return {
-        Day: new Date(data.Day),
-        CountNight: Number(data.CountNight),
-        CountDay: Number(data.CountDay),
-    }
-}
+d3.csv('TimelineData.csv', rowConverter, (trips) => {
+    tripsEachDay = trips
 
-d3.csv('TimelineDataDayNight.csv', rowConverter2, (tripsDayNight) => {
-    dayNightLineChart = d3.select("#dayNightTimeline")
+    linecharts = d3.select("#fullTimeline")
         .append("svg")
         .attr("width", w)
         .attr("height", linechartHeight)
         .attr("class", 'linechart');
 
-    let lineChartYScale = d3.scaleLinear()
+    lineChartXScale = d3.scaleTime()
+        .domain([
+            d3.min(tripsEachDay, function (d) {
+                return d.Day;
+            }),
+            d3.max(tripsEachDay, function (d) {
+                return d.Day;
+            })
+        ])
+        .range([padding, w - padding]);
+    lineChartYScale = d3.scaleLinear()
         .domain([
             0,
-            d3.max(tripsDayNight, function (d) {
-                return (d.CountDay > d.CountNight) ? d.CountDay : d.CountNight
+            d3.max(tripsEachDay, function (d) {
+                return d.Count;
             })
         ])
         .range([linechartHeight - padding, padding]);
 
-    dayNightxAxis = d3.axisBottom()
+    xAxis = d3.axisBottom()
         .scale(lineChartXScale)
         .ticks(12)
     //Define Y axis
-    dayNightYAxis = d3.axisLeft()
+    yAxis = d3.axisLeft()
         .scale(lineChartYScale)
         .ticks(6)
 
-    lineDay = d3.line()
+    line = d3.line()
         .x(function (d) {
             return lineChartXScale(d.Day);
         })
         .y(function (d) {
-            return lineChartYScale(d.CountDay);
+            return lineChartYScale(d.Count);
         });
-    lineNight = d3.line()
-        .x(function (d) {
-            return lineChartXScale(d.Day);
-        })
-        .y(function (d) {
-            return lineChartYScale(d.CountNight);
-        });
-    dayNightLineChart.append("svg:clipPath")
+    linecharts.append("svg:clipPath")
         .attr("id", "clip")
         .append("svg:rect")
         .attr("x", padding)
         .attr("y", 0)
         .attr("width", w - 2 * padding)
         .attr("height", linechartHeight)
-    dayNightLineChart.append("g")
+    linecharts.append("g")
         .attr("class", "xAxis")
         .attr("transform", "translate(0," + (linechartHeight - padding) + ")")
-        .call(dayNightxAxis);
-    dayNightLineChart.append("g")
+        .call(xAxis);
+    linecharts.append("g")
         .attr("class", "yAxis")
         .attr("transform", "translate(" + padding + ",0)")
-        .call(dayNightYAxis);
-    pathNight = dayNightLineChart.append("path")
-        .datum(tripsDayNight)
+        .call(yAxis);
+    wholePath = linecharts.append("path")
         .attr("clip-path", "url(#clip)")
-        .attr("d", lineNight)
-        .attr("class", "lineNight")
-    pathDay = dayNightLineChart.append("path")
-        .datum(tripsDayNight)
-        .attr("clip-path", "url(#clip)")
-        .attr("d", lineDay)
-        .attr("class", "lineDay")
+        .datum(tripsEachDay)
+        .attr("width", w - 2 * padding)
+        .attr("height", linechartHeight)
+        .attr("d", line)
+        .attr("class", "line")
+
+
+
+
+
+    let rowConverter2 = (data) => {
+        return {
+            Day: new Date(data.Day),
+            CountNight: Number(data.CountNight),
+            CountDay: Number(data.CountDay),
+        }
+    }
+
+    d3.csv('TimelineDataDayNight.csv', rowConverter2, (tripsDayNight) => {
+        dayNightLineChart = d3.select("#dayNightTimeline")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", linechartHeight)
+            .attr("class", 'linechart');
+
+        let lineChartYScale = d3.scaleLinear()
+            .domain([
+                0,
+                d3.max(tripsDayNight, function (d) {
+                    return (d.CountDay > d.CountNight) ? d.CountDay : d.CountNight
+                })
+            ])
+            .range([linechartHeight - padding, padding]);
+
+        dayNightxAxis = d3.axisBottom()
+            .scale(lineChartXScale)
+            .ticks(12)
+        //Define Y axis
+        dayNightYAxis = d3.axisLeft()
+            .scale(lineChartYScale)
+            .ticks(6)
+
+        lineDay = d3.line()
+            .x(function (d) {
+                return lineChartXScale(d.Day);
+            })
+            .y(function (d) {
+                return lineChartYScale(d.CountDay);
+            });
+        lineNight = d3.line()
+            .x(function (d) {
+                return lineChartXScale(d.Day);
+            })
+            .y(function (d) {
+                return lineChartYScale(d.CountNight);
+            });
+        dayNightLineChart.append("svg:clipPath")
+            .attr("id", "clip")
+            .append("svg:rect")
+            .attr("x", padding)
+            .attr("y", 0)
+            .attr("width", w - 2 * padding)
+            .attr("height", linechartHeight)
+        dayNightLineChart.append("g")
+            .attr("class", "xAxis")
+            .attr("transform", "translate(0," + (linechartHeight - padding) + ")")
+            .call(dayNightxAxis);
+        dayNightLineChart.append("g")
+            .attr("class", "yAxis")
+            .attr("transform", "translate(" + padding + ",0)")
+            .call(dayNightYAxis);
+        pathNight = dayNightLineChart.append("path")
+            .datum(tripsDayNight)
+            .attr("clip-path", "url(#clip)")
+            .attr("d", lineNight)
+            .attr("class", "lineNight")
+        pathDay = dayNightLineChart.append("path")
+            .datum(tripsDayNight)
+            .attr("clip-path", "url(#clip)")
+            .attr("d", lineDay)
+            .attr("class", "lineDay")
+
+
+        quarters.forEach((element) => {
+            var h = document.getElementById(element);
+            h.addEventListener('click', zoomTimelines.bind(this));
+        })
+
+        times.forEach((element) => {
+            var h = document.getElementById(element);
+            h.addEventListener('click', changeTimeline.bind(this));
+        })
+    })
+
 })

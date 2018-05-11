@@ -1,35 +1,93 @@
-<!DOCTYPE	html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>time to learn D3</title>
-    <script type="text/javascript" src="d3.js"></script>
-    <script type="text/javascript" src="jquery-3.3.1.js"></script>
-    <script type="text/javascript" src="drawEurope.js"></script>
-    <script type="text/javascript" src="timeLine.js"></script>
-    <script type="text/javascript" src="barchart.js"></script>
-    <script type="text/javascript" src="stackedbarchart.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-        crossorigin="anonymous">
-    <link rel="stylesheet" href="/styles.css" src="/styles.css?v={5}">
+	<meta charset="utf-8">
+	<title>Final Project</title>
+	<script type="text/javascript" src="d3.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="main.css">
 </head>
+<style>
+</style>
+<header></header>
 
-<body class="container" , id="body">
-    <p>hello</p>
-
-    <script type="text/javascript">
-        //d3.select("body").append("p").text("New	paragraph!");
-
-
-        //For converting Dates to strings
-        stackedBarchart();
-
-
-
-    </script>
-
+<body>
+	<div class="container">
+		<h1>Visualization Introductory Text</h1>
+		<p>
+			A brief outline over the fundamentals of our idea and visualization are given below in order to provide an introduction.
+			A thorough analysis of the project can be found in our Explainer Page.
+		</p>
+		<div class="links">
+			<a class="third after" href="webpage_report/index.html">Explainer Page</a>
+			<a class="third after" href="webpage_report/index.html">Github repository</a>
+		</div>
+		<h2>What do you see?</h2>
+		<p>
+			The visualization starts with a projection map of NYC where two sets of clickable circles are added to pinpoint centers of
+			areas with high pickup and dropoff activity. Color coding is applied on the map so that each hue is consistent to the
+			number of people per square kilometer in the respective borough. As you can notice, the density of transportation activity
+			becomes massive close to Manhattan, with four pickup centers surrounding it and one located in it. Therefore don’t be
+			surprised to learn that Manhattan has twice the population per square kilometer than Queens and Brooklyn where the population
+			in absolute number is higher than Manhattan.
+		</p>
+		<p>
+			Two sets of buttons included to enable double filtering the results by narrowing down the datapoints of interest to only
+			one quarter of the year, or between two different time intervals, one for day and another for night hours. Finally there
+			are two timelines where you can see the trip count timeline filtered by your selection; if no selection is active then
+			the timelines reflect all 2015 data. It is worth noting that the upper timeline shows the total count, while the lower
+			can be filtered to display only day-hour or night-hour trips.
+		</p>
+		<h2>How it works?</h2>
+		<p>
+			Initially, before any selection is carried out by means of clicking some button the visualization reflects results over both
+			day-time and night-time trips throughout 2015. You are able to activate either one button or two buttons (one in each
+			set) simultaneously. The cluster centers and timelines will be updated according to your selection.
+		</p>
+		<p>
+			Furthermore when clicking on a cluster center on the map, e.g. a pickup center, red lines will connect it to all dropoff
+			centers; in this case the width of each line reflects what portion of pickups from the clicked center led to dropoffs
+			in the other cluster.
+			<br/>Note that if you have two buttons activated simultaneously, then you’ll see the actual datapoints projected on the map
+			in addition to the lines.
+		</p>
+		<h2>What is its purpose?</h2>
+		<p>
+			Observe the density and flow of transportations in NYC, locate the centers of massive transportation activity and quantify
+			the proportion by which these centers communicate with one another. View the variations in pickup and dropoff densities
+			between different seasons or during day or night hours. See the weekly oscillations on trip count and how they are distorted
+			at certain periods.
+		</p>
+		<div id="map">
+			<div id="buttons">
+				<div class="quarters">
+					<button type="button" id="Q1" onclick="selectQuarter('Q1')">Jan-Mar</button>
+					<button type="button" id="Q2" onclick="selectQuarter('Q2')">Apr-Jun</button>
+					<button type="button" id="Q3" onclick="selectQuarter('Q3')">Jul-Sep</button>
+					<button type="button" id="Q4" onclick="selectQuarter('Q4')">Oct-Dec</button>
+				</div>
+				<div class="time">
+					<button type="button" id="Day" onclick="selectTime('Day')">6am-12pm</button>
+					<button type="button" id="Night" onclick="selectTime('Night')">10pm-4am</button>
+				</div>
+				<div class="legend">
+					<div class="element">
+						Dropoff:
+						<div id="redCircle"></div>
+					</div>
+					<div class="element">
+						Pickup:
+						<div id="blueCircle"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="fullTimeline"></div>
+		<div id="dayNightTimeline"></div>
+	</div>
+	<script type="text/javascript" src="myshit.js"></script>
+	<script type="text/javascript" src="timeline.js"></script>
 </body>
 
 </html>

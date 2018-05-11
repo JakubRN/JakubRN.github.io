@@ -1,0 +1,10 @@
+cd C:\Users\George\Documents\DTU\SocialDataAnalysisAndVisualization\ProjectAssignment\webpage
+
+/// For python 2.7 
+python -m SimpleHTTPServer 8888 &
+
+/// For python 3.6 
+python -m http.server 8888 &
+
+/// Follow the link 
+http://localhost:8888/

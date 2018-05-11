@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Project Assignment</title>
+	<script type="text/javascript" src="d3.js"></script>
+	<link rel="stylesheet" href="A2.css">
+</head>
+<style>
+</style>
+<header></header>
+
+<body>
+	<div id="content">
+		<div class="Section">
+			<div class="Section-header">
+				<h2>1. &nbsp Motivation</h2>
+			</div>
+			<p></p>
+			<div class="myText">
+				<div class="subHeader">
+					<h3>1.1 &nbsp Description of data</h3>
+				</div>
+				<div class="myPoint">
+					<p>The dataset whose certain aspects we analyze in this project is <i><a target="_blank" href="https://en.wikipedia.org/wiki/Boro_taxi"><i>Green Taxi</i></a> Trip Data</i> from New York City 
+					for the year 2015; this data is made available at <a target="_blank" href="https://data.cityofnewyork.us/Transportation/2015-Green-Taxi-Trip-Data/gi8d-wdg5">NYC Open Data</a>. 
+					The size of the original dataset is 2.12 GB and consists of 19.2 million observations (rows) of 21 features (columns). At this very first stage we already 
+					tried to gather those features that can narrate an interesting story. Those features, presented on Table 1.1, include the exact datetime of each pickup and dropoff point, 
+					rate code, number of passengers, distance covered, total amount charged, payment and trip type for each trip; a more comprehensive description of these variables can be 
+					found <a target="_blank" href="https://data.cityofnewyork.us/api/views/gi8d-wdg5/files/77ea6e98-7096-453d-87f7-bfd5313b60d2?download=true&filename=data_dictionary_trip_records_green.pdf">here</a>. 
+					Moreover geographical projection data, in json format, is available for each pickup and dropoff location in the dataset. </p>
+					<p>It is worth noting that this was our initial harvest of variables, where we reduced their number from 21 to 12; the 8 contained in Table 1.1 plus 4 which are the longitude and latitude for 
+					each pickup and dropoff point. Later on, as we performed our analysis we realised that the extent of this project does not enable the inclusion of all those variables.</p>
+					<div class="tabcap"><i>Table 1.1: Data summary and brief description.</i></div>
+					 <img src="images\im11.jpg" alt="im11" class="centered"> 
+				</div>
+				<div class="subHeader">
+					<h3>1.2 &nbsp Why this dataset</h3>
+				</div>
+				<div class="myPoint">
+					<p>Our reason for selecting the dataset described in the previous section was not strictly related to green taxi activity in New York City. The early idea was to investigate 
+					transportations in NYC. The understanding of ransportation routine within a city is fairly intriguing and can reveal many important or underlying habits of its citizens' social life. 
+					Chasing the flow of people inside some city borders is likely to reveal all the vital routes and the most vivid locations. 
+					</p>
+					<p>There are however few more practical reasons behind our choice of this specific dataset for carrying out our initial idea. One could find too many datasets related to transportations 
+					in NYC, e.g. Uber, Yellow Taxi, etc; therefore why Green Taxi data? First of all, since our purpose is general any of these datasets could have been used to implement this project and 
+					it is expected that results would be highly similar if not identical. The chief factor that led us to this dataset is that the number of observations (19.2 million) is feasible for our 
+					available computer power to work with; relevant Yellow Taxi or Uber data contained hundreds of millions of datapoints (ten's of GBs), thus hindering our efficiency dramatically. 
+					Moreover an early view of the dataset indicated that it was quite "healthy", consisting lots of interesting parameters, acceptable amount of missing values, and including geographical 
+					projection data for each pickup and dropoff location.
+					</p>
+				</div>
+				<div class="subHeader">
+					<h3>1.3 &nbsp Goal of this project</h3>
+				</div>
+				<div class="myPoint">
+					<p>The overall goal of this project is to produce an interactive visualization that can provide an adequate summary of annual transportations in NYC. 
+					Our effort is only on data for 2015, however it seems reasonable to assume that our results can be generalized for any relatively close, past or future, 
+					year. Furthermore we believe that an interesting point for the end user could be to observe the variations in pickup and dropoff densities between 
+					different seasons or during day or night, since the patterns are likely to be highly similar for consecutive days. 
+					</p>
+					<p>We want the user to be able to observe the density and flow of transportations in NYC, to help him locate the centers of massive 
+					transportation activity and quantify the proportion by which these centers communicate with one another. Furthermore the visualization 
+					will be updated on user demand to illustrate results of our analysis for some specific quarter of the year or exclusively for day or night 
+					hours, hence offering the potential to witness the activity in different seasons or through day or night hours. Finally we also aim 
+					to provide an entertaining and eye-friendly result so that its use will be pleasant to the user. 
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="Section">
+			<div class="Section-header">
+				<h2>2. &nbsp Inital Exploratory Analysis</h2>
+			</div>
+			<p></p>
+			<div class="myText">
+				<div class="subHeader">
+					<h3>2.1 &nbsp Data refining and preprocessing</h3>
+					<p>As a very first task we had to import the data into the R development studio in order to process it. It proved to be rather challenging 
+					to import 2.12 GB in a data frame, and therefore we loaded it partially using multiple data frames of one million rows each. It soon became 
+					clear that almost five million rows of the initial dataset were corrupted, thus reducing the number of observations to 14 million. As one 
+					would expect the spoiled rows were not uniform, resulting in a disturbing asymmetry where January and February datapoints were disproportionately 
+					more than those of other months. This issue hindered us from deriving aggregate statistics over the full dataset, however we proceeded with 
+					sampling 100.000 observations from each month, hence forming a new dataset of 1,2 million rows. </p>
+					<p>A dataset of 1,2 million datapoints seems rather feasible for our computer power to handle, nevertheless one more limitation was imposed 
+					from D3 where at some point we wished to visualize the actual pickup and dropoff points on the projection map of NYC. Displaying more than 
+					30-35 thousand points at the same time would cause a gradually increasing time delay when interactivity is enabled. Moreover 1,2 million pickup and 
+					dropoff locations imply 2,4 million projection points, which is impossible for D3 to cope with. Therefore we had to come up with a plan to narrow 
+					down the number of points to be projected through filtering, while also retaining the desirable information for the user. </p>
+					<p>Our plan was to consider only two time intervals within each day rather than the whole 24 hours, namely 6am to 12pm and 10pm to 4am to represent 
+					Day and Night hours, respectively. The latter step, together with the exclusion of few extremely outlying pickup or dropoff locations, dropped the 
+					number of rows down to 589.531, and further provided the potential for a split, as illustrated in Figure 2.1, between observations that took place 
+					during day from those at night hours. The majority of observations, namely 310.326 were night trips, whereas the remaining 279.205 were day trips. 
+					Afterwards we implemented a second level split into the four quarters of a year (Q1: Jan-Feb-Mar, Q2: Apr-May-Jun, Q3: Jul-Aug-Sep and Q4: Oct-Nov-Dec), 
+					depicted in Figure 2.2. This final attempt further narrowed the number of observations at each leaf down to 70-80 thousand. </p>
+					<p>The two-level-split led to a significant reduction of the number of observations at the leaves, however one more step was required in order to 
+					get an amount of datapoints that are feasible to project on the NYC map without lagging on user updates. At this point the idea was to use the k-means 
+					clustering algorithm to find some centers in pickup and dropoff points and classify each of them to the cluster characterized by its closest center. 
+					Details for the k-means fit are given in the following subsection; it is worth noting that our objective was finally met, hence after selecting 
+					quarter, time interval and cluster center the end user will be able to see the actual pickup and dropoff points projected on the NYC map.</p>
+					<div class="myPoint">
+						<p></p>
+						<div class="row">
+							<div class="column">
+								<img src="images\im26.jpg" alt="im26" width=100%;> 
+								<figcaption><i>Figure 2.1: Single-level-split of data into day and night hours.</i></figcaption>
+							</div>
+							<div class="column">
+								<img src="images\im25.jpg" alt="im25" width=100%;> 
+								<figcaption><i>Figure 2.2: Two-level-split of data; first to the four quarters and then into day and night hours.</i></figcaption>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="subHeader">
+					<h3>2.2 &nbsp Statistics of interest</h3>
+				</div>
+				<div class="myPoint">
+					<p>The statistics that we employed to carry out our goal for this project were the <b><i>daily count of trips</i></b> and the estimated, 
+					from the k-means algorithm, <b><i>pickup</i></b> and <b><i>dropoff clusters</i></b>. We counted the trips for each day, considering only 
+					the two time intervals (12 hours per day in total) as described in the previous subsection. Furthermore the amount of trips during explicitly 
+					day or night hours was calculated and is provided in the visualization, where in addition when the user selects a specific quarter of the year 
+					the trip count timelines zoom on that quarter alone. </p>
+					<p>Early plots of trip count timelines from our exploratory analysis are illustrated in Figures 2.3 and 2.4, where one can easily observe 
+					the weekly patterns with peaks close to weekends and further two singular spurs at new years eve day and at 27th of January, with a profound 
+					peak in the former, while for the latter an extreme minimum of trip counts. </p>
+					<p>Figure 2.3 contains the aggregate number of trips for both day and night hours, hence we would like to disambiguate this statistics 
+					during day (6am-12pm) and night (10pm-4am) hours. For this reason we present Figure 2.4 where the two time intervals were unbundled and 
+					trip counts for each of them is depicted throughout 2015. It can be seen that the amount of trips at night hours vary dramatically within 
+					weeks compared to that in day hours, and moreover that the impact of new years eve day affects only night trips, while in the 27th of January 
+					day trips seem to have a more severe effect on the count. 
+					</p>
+					<p>It is worth noting that the timelines presented in this subsection are made upon sampling only 1,2 million out of 19,2 million 
+					datapoints and further by analyzing the two time intervals (narrowing down to 589.531 observations) that represent day and night hours 
+					as explained above. However the results capture the dynamics of the original full dataset sufficiently, as can be verified  
+					<a target="_blank" href="https://data.cityofnewyork.us/Transportation/2015-Green-Taxi-Trip-Data/n4kn-dy2y">here</a>.</p>
+					<div class="row">
+						<div class="column">
+							<img src="images\im21.jpeg" alt="im21" width=100%;> 
+							<figcaption><i>Figure 2.3: Final sampled dataset (All Data).</i></figcaption>
+						</div>
+						<div class="column">
+							<img src="images\im22.jpeg" alt="im22" width=100%;> 
+							<figcaption><i>Figure 2.4: All Day and All Night datasets.</i></figcaption>
+						</div>
+					</div>
+					<p>The second stage of our analysis included applying k-means algorithm to both pickup and dropoff locations for each node of the tree 
+					in Figure 2.2, as well as for all day and all night trips separately. More specifically the algorithm was used to estimate pickup and 
+					dropoff centers for each of these 15 datasets, therefore 30 sets of clusters were derived in total. Our reason for doing so is that 
+					we observed cluster centers to vary between at some quarters and in total between day and night trips. Figure 2.5 for example illustrates 
+					pickup cluster centers for all day and night trips, where it can be seen that they are almost identical, while in Figure 2.6 the relevant 
+					dropoff cluster centers appear to differ quite alot. Moreover one can witness that there are differences between pickup and dropoff cluster 
+					centers in general. </p>
+					<div class="row">
+						<div class="column">
+							<img src="images\im27.jpeg" alt="im27" width=100%;> 
+							<figcaption><i>Figure 2.5: Pickup cluster centers for day and night hours.</i></figcaption>
+						</div>
+						<div class="column">
+							<img src="images\im28.jpeg" alt="im28" width=100%;> 
+							<figcaption><i>Figure 2.6: Dropoff cluster centers for day and night hours.</i></figcaption>
+						</div>
+					</div>
+					<p>We aimed from the beginning to find a way to narrow down the number of datapoints so that geographical projection on NYC map would 
+					be possible, and the user would be able to view the exact pickup and dropoff locations as well as how these actual points are clustered. 
+					Results of k-means for day trips at the fourth quarter of 2015 are demonstrated on Figures 2.7 and 2.8 for pickups and dropoffs, respectively. 
+					One can observe some differences in the pickup and dropoff densities, and moreover how the clusters look at each case. This method gave us 
+					the means to create clusters of appropriate sizes so that we could store and project the actual pickup with corresponding dropoff locations 
+					for one cluster at a time and vice versa, on the NYC map without lag. Therefore both the centers of areas with dense activity as well as the flow 
+					between them will be present on our visualization. </p>
+					<div class="row">
+						<div class="column">
+							<img src="images\im23.jpeg" alt="im23" width=100%;> 
+							<figcaption><i>Figure 2.7: Clustered pickup points for Q4 Day data.</i></figcaption>
+						</div>
+						<div class="column">
+							<img src="images\im24.jpeg" alt="im24" width=100%;> 
+							<figcaption><i>Figure 2.8: Clustered dropoff points for Q4 Day data.</i></figcaption>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="Section">
+			<div class="Section-header">
+				<h2>3. &nbsp Narrative Style</h2>
+			</div>
+			<p></p>
+			<div class="myText">
+				<div class="subHeader">
+					<h3>3.1 &nbsp Genre</h3>
+				</div>
+				<div class="myPoint">
+					<p>Our visualization's genre is the <b>Annotated Graph/Map</b>, namely a map of NYC is employed so that the user would be able to view 
+					the centers of transportation activity projected on the map, together with the actual pickup and dropoff locations if he completes a full 
+					selection of quarter, day/night hours and cluster center. Moreover two timelines are included to illustrate the total and day/night count of trips, 
+					respectively, throughout some time interval which he/she will determine. We believe that this genre can supply a delicate scheme of pleasant 
+					narration out of the results from our analysis. </p>
+				</div>
+				<div class="subHeader">
+					<h3>3.2 &nbsp Choise of Visual Narrative</h3>
+				</div>
+				<div class="myPoint">
+					<p>We used a <b>consistent visual platform</b>, more specifically a colour consistent map of the five Boroughs of NYC, with the relative density 
+					of transportations in each Borough being reflected on the intensity of its hue. <b>Feature distinction</b> is also being employed to indicate 
+					pickup (blue) and dropoff (orange) cluster centers or actual projected locations, as well as to signify night (blue) and day (red) trip counts 
+					on our second timeline. <b>Zooming</b> is also performed on both timelines when user selects a quarter of the year, in order to solely illustrate 
+					data related to this quarter. </p>
+				</div>
+				<div class="subHeader">
+					<h3>3.3 &nbsp Choise of Narrative Structure</h3>
+				</div>
+				<div class="myPoint">
+					<p>We structured the path of our narrative to be <b>user directed</b>, since the multiple one is able to create multiple scenarios by different 
+					selections of quarter, time interval or cluster center and draw own conclusions accordingly. Interactivity is present through <b>filtering/selection</b>
+					by pushing one of the relevant buttons on top of the page or some cluster center to display the relative flow of transportations or the actual locations 
+					for a complete selection. Moreover <b>hovering</b> on the flow lines, seen on the map when clicking on a cluster center, or on the timelines at the bottom 
+					of the page tooltips with relevant details show up. Finally auxiliary details for understanding the visualization are presented through <b>Captions/Headlines</b> 
+					where we considered appropriate, and <b>Introductory Text</b> is included to offer a brief early tutorial. </p>
+				</div>
+			</div>
+		</div>
+		<div class="Section">
+			<div class="Section-header">
+				<h2>4. &nbsp Visualizations</h2>
+			</div>
+			<p></p>
+			<div class="myText">
+				<div class="subHeader">
+					<h3>4.1 &nbsp Data visualization types</h3>
+					<p></p>
+				</div>
+				<div class="myPoint">
+					<p></p>
+				</div>
+				<div class="subHeader">
+					<h3>4.2 &nbsp Appropriateness of storytelling</h3>
+				</div>
+				<div class="myPoint">
+					<p></p>
+				</div>
+			</div>
+		</div>
+		<div class="Section">
+			<div class="Section-header">
+				<h2>5. &nbsp Conclusions</h2>
+			</div>
+			<p></p>
+			<div class="myText">
+				<div class="subHeader">
+					<h3>5.1 &nbsp Implementation</h3>
+					<p></p>
+				</div>
+				<div class="myPoint">
+					<p></p>
+				</div>
+				<div class="subHeader">
+					<h3>5.2 &nbsp Implications</h3>
+				</div>
+				<div class="myPoint">
+					<p></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

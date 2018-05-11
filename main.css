@@ -1,0 +1,281 @@
+body {
+    font-family: 'Lucida Grande', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    color: #202020;
+    background: #eee;
+    margin: 40px 0 20px 0;
+    padding: 0;
+}
+
+.container {
+    width: 1000px;
+    margin: 25px auto;
+    padding: 50px;
+    background-color: white;
+    box-shadow: 0 0 20px #ccc;
+}
+
+#map {
+    position: relative;
+}
+
+p {
+    font-size: 14px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.legend {
+    flex: 1 0 0;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-around;
+}
+
+.element {
+    display: flex;
+    min-height: 25px;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 1 0 0;
+    font-size: 16px;
+    margin: 5px;
+}
+
+#redCircle {
+    flex: 0 0 initial;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #a52801;
+    border-color: black;
+    border-width: 1px;
+}
+
+#blueCircle {
+    flex: 0 0 initial;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #3f238b;
+    border-color: black;
+    border-width: 1px;
+}
+
+#buttons {
+    position: absolute;
+    left: 5%;
+    top: 10%;
+    width: 40%;
+}
+
+button {
+    background-color: #4CAF50;
+    /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    white-space: nowrap;
+    font-size: 16px;
+    margin: 5px;
+    flex: 1 0 0;
+    border: none;
+    outline: none;
+}
+
+.quarters {
+    flex: 1 0 0;
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+}
+
+.quarters button {
+    background-color: darkslategrey
+}
+
+.time {
+    flex: 1 0 0;
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+}
+
+.time button {
+    background-color: darkcyan
+}
+
+#boroughs {
+    stroke: #3f3c5c;
+    stroke-width: 1px;
+    fill: #4682b4;
+}
+
+.Manhattan {
+    stroke: #3f3c5c;
+    stroke-width: 1px;
+    fill: rgb(99, 151, 204);
+}
+
+.Queens {
+    stroke: #3f3c5c;
+    stroke-width: 1px;
+    fill: #bfd5e7;
+}
+
+.StatenIsland {
+    stroke: #3f3c5c;
+    stroke-width: 1px;
+    fill: #dfe8f5;
+}
+
+.Brooklyn {
+    stroke: #3f3c5c;
+    stroke-width: 1px;
+    fill: rgb(150, 193, 223);
+}
+
+.Bronx {
+    stroke: #3f3c5c;
+    stroke-width: 1px;
+    fill: rgb(143, 188, 221);
+}
+
+.label {
+    font-size: 14pt;
+    stroke: #151330;
+    stroke-width: 1px;
+    fill: #202020;
+    text-anchor: middle;
+}
+
+.Pickup_cluster_centre {
+    fill: #3f238b;
+    stroke: black;
+    stroke-width: 1px;
+}
+
+.Dropoff_cluster_centre {
+    fill: #a52801;
+    stroke: black;
+    stroke-width: 1px;
+}
+
+.Pickup_cluster_data {
+    fill: #3c1a9b;
+    opacity: 0.4;
+}
+
+.Dropoff_cluster_data {
+    fill: #ff8800;
+}
+
+.dropoff_pickup_line {
+    stroke: #c01c1c;
+    opacity: 0.5;
+}
+
+.dropoff_pickup_line_ends {
+    fill: #c01c1c;
+    opacity: 1;
+}
+
+.dropoff_pickup_line_begin {
+    fill: #c01c1c;
+    opacity: 1;
+}
+
+.line {
+    fill: none;
+    stroke: teal;
+    opacity: 0.7;
+    stroke-width: 2;
+}
+
+.lineDay {
+    fill: none;
+    stroke: rgb(255, 42, 42);
+    opacity: 0.7;
+    stroke-width: 2;
+}
+
+.lineNight {
+    fill: none;
+    stroke: rgb(8, 49, 160);
+    opacity: 0.7;
+    stroke-width: 2;
+}
+
+.axis {
+    font-size: 12px;
+}
+
+.linechart {
+    stroke: #1b0d0d;
+    stroke-width: 0.5;
+}
+
+a,
+a:visited,
+a:hover,
+a:active {
+    line-height: 150%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    position: relative;
+    transition: 0.5s color ease;
+    text-decoration: none;
+    color: #4a7d9c;
+    font-size: 2em;
+}
+
+.links {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+}
+
+a {
+    margin: 2px 10px;
+}
+
+a:hover {
+    color: #d73444;
+}
+
+a.after:after {
+    content: "";
+    transition: 0.5s all ease;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    position: absolute;
+}
+
+a.after:after {
+    bottom: -0.25em;
+}
+
+a.after:after {
+    height: 3px;
+    height: 0.15rem;
+    width: 0;
+    background: #d73444;
+}
+
+a.third:after {
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+a.after:hover:after {
+    width: 100%;
+}

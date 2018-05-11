@@ -2,7 +2,7 @@ let linechartHeight = h / 4;
 let padding = 50;
 let quarters = ['Q1', 'Q2', 'Q3', 'Q4']
 let times = ['Night', 'Day']
-let transitionDuration = 600
+let transitionDuration = 700
 let rowConverter = (data) => {
     {
         return {

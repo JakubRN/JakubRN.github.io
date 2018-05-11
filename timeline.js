@@ -18,7 +18,6 @@ let xAxis, yAxis;
 let line, wholePath;
 d3.csv('TimelineData.csv', rowConverter, (trips) => {
     tripsEachDay = trips
-    console.log(tripsEachDay);
 
     linecharts = d3.select("#fullTimeline")
         .append("svg")
@@ -139,7 +138,6 @@ function zoomTimelines() {
 function changeTimeline() {
     switch (selectedTime) {
         case 'Day':
-            console.log('hello')
             dayNightLineChart
                 .select('.lineDay')
                 .transition()
@@ -186,7 +184,6 @@ let rowConverter2 = (data) => {
 }
 
 d3.csv('TimelineDataDayNight.csv', rowConverter2, (tripsDayNight) => {
-    console.log(tripsDayNight)
     dayNightLineChart = d3.select("#dayNightTimeline")
         .append("svg")
         .attr("width", w)

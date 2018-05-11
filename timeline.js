@@ -46,6 +46,7 @@ d3.csv('TimelineData.csv', rowConverter, (trips) => {
 
     xAxis = d3.axisBottom()
         .scale(lineChartXScale)
+        .ticks(12)
     //Define Y axis
     yAxis = d3.axisLeft()
         .scale(lineChartYScale)
@@ -201,6 +202,7 @@ d3.csv('TimelineDataDayNight.csv', rowConverter2, (tripsDayNight) => {
 
     dayNightxAxis = d3.axisBottom()
         .scale(lineChartXScale)
+        .ticks(12)
     //Define Y axis
     dayNightYAxis = d3.axisLeft()
         .scale(lineChartYScale)

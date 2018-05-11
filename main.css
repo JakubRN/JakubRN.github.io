@@ -240,7 +240,7 @@ a:active {
 .links {
     display: flex;
     flex-flow: row nowrap;
-    justify-content: flex-start;
+    justify-content: center;
 }
 
 a {

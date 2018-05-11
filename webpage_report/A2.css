@@ -1,0 +1,110 @@
+body {
+	font-family: 'Lucida Grande', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 10px;
+	color: #202020;
+	background: #eee;
+	margin: 40px 0 20px 0;
+	padding: 0;
+}
+
+#content {
+	width: 1000px;
+	height: 100%;
+	margin: 25px auto 25px auto;
+	padding: 50px 50px 50px 50px;
+	background-color: white;
+	box-shadow: 0 0 20px #ccc;
+	position: relative;
+}
+
+#content a {
+	color: teal;
+	font-weight: normal;
+	font-style: italic;
+	text-decoration: none;
+}
+
+#content a:hover { color: blue; }
+
+#content .Section .Section-header{
+	border-bottom: 5px solid #202020;
+	padding: 0 0 10px 0;
+	position: relative;
+}
+
+#content .Section .Section-header h2{
+	color: #202020;
+	font-family: Cambria;
+	font-size: 48px;
+	font-style: normal;
+	font-weight: bold;
+	letter-spacing: -3px;
+	text-decoration: none;
+	margin: 0;
+}
+
+#content .Section .myText{
+	color: #202020;
+	font-family: Utopia;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: normal;
+	letter-spacing: 0px;
+	text-decoration: none;
+	margin: 0;
+	position: relative;
+	padding: 10px 0 0 0;
+}
+
+#content .Section .myText .subHeader h3{
+	color: #202020;
+	font-family: Utopia;
+	font-size: 24px;
+	font-style: normal;
+	font-weight: bold;
+	letter-spacing: 0px;
+	text-decoration: none;
+	margin: 0;
+	position: relative;
+	padding: 0 0 10px 0;
+}
+
+#content .Section .myText .myPoint {
+	border-bottom: 1px solid #202020;
+	padding: 0 0 10px 0;
+	position: relative;
+}
+
+#content .Section .myText .myPoint a {
+	color: teal;
+	font-weight: normal;
+	font-style: normal;
+	text-decoration: none;
+}
+
+#content .Section .myText .myPoint a:hover { color: blue; }
+
+a:active, a:focus { outline: 0; }
+
+.centered {
+    display: block;
+    margin-right: auto;
+    width: 50%;
+}
+
+.row {
+  display: flex;
+}
+
+.column {
+  flex: 33.33%;
+  padding: 5px;
+}
+
+figcaption {
+    text-align: center;
+}
+
+.tabcap{
+    text-align: left;
+}

@@ -95,8 +95,7 @@ d3.json("boroughs.json", function (map) {
         });
 
     d3.json('onlyCenters.json', (clusterCentres) => {
-        console.log("Cluster centers:")
-        console.log(clusterCentres);
+
         let wholeClusters = {}
         let clusterConnections = {}
 
@@ -132,7 +131,6 @@ d3.json("boroughs.json", function (map) {
             if (selectedTime != '') {
                 filteredData = filteredData[selectedTime];
             }
-            console.log(filteredData)
             let circles = mapContainer.selectAll(['.', translation, '_cluster_centre'].join(''))
                 .data(filteredData['clusterData'])
                 .enter()
@@ -320,11 +318,9 @@ d3.json("boroughs.json", function (map) {
             h.addEventListener('click', displayClusters.bind(this));
         })
         d3.json('wholeClusters.json', (loadedData) => {
-            console.log(loadedData);
             wholeClusters = loadedData;
         })
         d3.json('Connections.json', (con) => {
-            console.log(con);
             clusterConnections = con;
         })
 

@@ -46,23 +46,25 @@ h1 {
 }
 
 #redCircle {
+    margin-left: 5px;
     flex: 0 0 initial;
     width: 20px;
     height: 20px;
     border-radius: 50%;
     background-color: #a52801;
-    border-color: black;
-    border-width: 1px;
+    border: 1px solid black;
+    opacity: 0.8;
 }
 
 #blueCircle {
+    margin-left: 5px;
     flex: 0 0 initial;
     width: 20px;
     height: 20px;
     border-radius: 50%;
     background-color: #3f238b;
-    border-color: black;
-    border-width: 1px;
+    border: 1px solid black;
+    opacity: 0.8;
 }
 
 #buttons {

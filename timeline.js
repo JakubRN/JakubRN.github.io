@@ -164,7 +164,13 @@ d3.csv('TimelineData.csv', rowConverter, (trips) => {
         .attr("height", linechartHeight)
         .attr("d", line)
         .attr("class", "line")
-
+    linecharts.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", 0 - (linechartHeight / 2))
+        .attr("y", padding - 40)
+        .attr("font-size", "12px")
+        .attr("text-anchor", "middle")
+        .text("Trip Count");
 
 
 
@@ -240,7 +246,13 @@ d3.csv('TimelineData.csv', rowConverter, (trips) => {
             .attr("clip-path", "url(#clip)")
             .attr("d", lineDay)
             .attr("class", "lineDay")
-
+        dayNightLineChart.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("x", 0 - (linechartHeight / 2))
+            .attr("y", padding - 40)
+            .attr("font-size", "12px")
+            .attr("text-anchor", "middle")
+            .text("Trip Count");
 
         quarters.forEach((element) => {
             var h = document.getElementById(element);

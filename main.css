@@ -28,7 +28,10 @@ h1 {
 }
 
 .legend {
-    flex: 1 0 0;
+    position: absolute;
+    left: 5%;
+    top: 25%;
+    width: 20%;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-around;
@@ -149,6 +152,46 @@ button {
     stroke: #3f3c5c;
     stroke-width: 1px;
     fill: rgb(143, 188, 221);
+}
+
+#first-l {
+    margin-right: 10px;
+    width: 30px;
+    height: 20px;
+    border: 1px solid #3f3c5c;
+    background-color: rgb(99, 151, 204);
+}
+
+#second-l {
+    margin-right: 10px;
+    width: 30px;
+    height: 20px;
+    border: 1px solid #3f3c5c;
+    background-color: rgb(150, 193, 223);
+}
+
+#third-l {
+    margin-right: 10px;
+    width: 30px;
+    height: 20px;
+    border: 1px solid #3f3c5c;
+    background-color: rgb(143, 188, 221);
+}
+
+#fourth-l {
+    margin-right: 10px;
+    width: 30px;
+    height: 20px;
+    border: 1px solid #3f3c5c;
+    background-color: #bfd5e7;
+}
+
+#fifth-l {
+    margin-right: 10px;
+    width: 30px;
+    height: 20px;
+    border: 1px solid #3f3c5c;
+    background-color: #dfe8f5;
 }
 
 .label {

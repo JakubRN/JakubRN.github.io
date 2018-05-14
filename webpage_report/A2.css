@@ -24,15 +24,17 @@ body {
 	text-decoration: none;
 }
 
-#content a:hover { color: blue; }
+#content a:hover {
+	color: blue;
+}
 
-#content .Section .Section-header{
+#content .Section .Section-header {
 	border-bottom: 5px solid #202020;
 	padding: 0 0 10px 0;
 	position: relative;
 }
 
-#content .Section .Section-header h2{
+#content .Section .Section-header h2 {
 	color: #202020;
 	font-family: Cambria;
 	font-size: 48px;
@@ -43,7 +45,7 @@ body {
 	margin: 0;
 }
 
-#content .Section .myText{
+#content .Section .myText {
 	color: #202020;
 	font-family: Utopia;
 	font-size: 16px;
@@ -56,7 +58,7 @@ body {
 	padding: 10px 0 0 0;
 }
 
-#content .Section .myText .subHeader h3{
+#content .Section .myText .subHeader h3 {
 	color: #202020;
 	font-family: Utopia;
 	font-size: 24px;
@@ -82,29 +84,91 @@ body {
 	text-decoration: none;
 }
 
-#content .Section .myText .myPoint a:hover { color: blue; }
+#content .Section .myText .myPoint a:hover {
+	color: blue;
+}
 
-a:active, a:focus { outline: 0; }
+a:active,
+a:focus {
+	outline: 0;
+}
 
 .centered {
-    display: block;
-    margin-right: auto;
-    width: 50%;
+	display: block;
+	margin-right: auto;
+	width: 50%;
 }
 
 .row {
-  display: flex;
+	display: flex;
 }
 
 .column {
-  flex: 33.33%;
-  padding: 5px;
+	flex: 33.33%;
+	padding: 5px;
 }
 
 figcaption {
-    text-align: center;
+	text-align: center;
 }
 
-.tabcap{
-    text-align: left;
+.tabcap {
+	text-align: left;
+}
+
+.links {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+}
+
+.links a,
+.links a:visited,
+.links a:hover,
+.links a:active {
+	line-height: 150%;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	position: relative;
+	transition: 0.5s color ease;
+	text-decoration: none;
+	color: #4a7d9c !important;
+	font-size: 2em;
+}
+
+.links a {
+	margin: 2px 10px;
+}
+
+.links a:hover {
+	color: #d73444 !important;
+}
+
+.links a.after:after {
+	content: "";
+	transition: 0.5s all ease;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	position: absolute;
+}
+
+.links a.after:after {
+	bottom: -0.25em;
+}
+
+.links a.after:after {
+	height: 3px;
+	height: 0.15rem;
+	width: 0;
+	background: #d73444 !important;
+}
+
+.links a.third:after {
+	left: 50%;
+	-webkit-transform: translateX(-50%);
+	transform: translateX(-50%);
+}
+
+.links a.after:hover:after {
+	width: 100%;
 }
